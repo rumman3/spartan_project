@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from spartan import Spartan
+from management import *
 import json
 
 web_app = Flask(__name__)
@@ -23,14 +24,30 @@ def home_page():
 def add_spartan():
     spartan = Spartan()
     spartan_data = request.json
-    spartan.id = spartan_data["id"]
-    spartan.firstname = spartan_data["firstname"]
-    spartan.lastname = spartan_data["lastname"]
-    spartan.birthday = spartan_data["birthday"]
-    spartan.birthmonth = spartan_data["birthmonth"]
-    spartan.birthyear = spartan_data["birthyear"]
-    spartan.course = spartan_data["course"]
-    spartan.stream = spartan_data["stream"]
+    text1 = spartan.set_id(spartans, spartan_data["id"])
+    if text1:
+        return text1
+    text2 = spartan.set_first_name(spartan_data["firstname"])
+    if text2:
+        return text2
+    text3 = spartan.set_last_name(spartan_data["lastname"])
+    if text3:
+        return text3
+    text4 = spartan.set_birth_day(spartan_data["birthday"])
+    if text4:
+        return text4
+    text5 = spartan.set_birth_month(spartan_data["birthmonth"])
+    if text5:
+        return text5
+    text6 = spartan.set_birth_year(spartan_data["birthyear"])
+    if text6:
+        return text6
+    text7 = spartan.set_course(spartan_data["course"])
+    if text7:
+        return text7
+    text8 = spartan.set_stream(spartan_data["stream"])
+    if text8:
+        return text8
     spartans[spartan.id] = spartan
 
     spartans_json = {}
@@ -45,35 +62,22 @@ def add_spartan():
 @web_app.route('/spartan/<spartan_id>', methods=["GET"])
 def spartan_record_getter(spartan_id):                     # must pass the changing variable as the parameter
     # Check the database. read from a file, etc till you get the data
-
-    try:
-        text = str(spartans[spartan_id])
-    except KeyError:
-        text = "Error: id not found"
-    return text
+    return retrieve(spartans, spartan_id)
 
 # http://127.0.0.1:5000/spartan/remove?id=spartan_id
 @web_app.route('/spartan/remove', methods=["GET"])
 def spartan_remover():                     # must pass the changing variable as the parameter
     spartan_id = request.args.get("id")
-    try:
-        del spartans[spartan_id]
-        text = f"Spartan id  successfully removed."
-
-        spartans_json = {}
-        for key, value in spartans.items():
-            spartans_json[key] = value.__dict__
-        with open("spartan_data.json", "w") as jsonfile:  # jsonfile is the pointer to the file
-            json.dump(spartans_json, jsonfile, indent=4)
-
-    except KeyError:
-        text = "Error: id not found"
-    return text
+    return remove(spartans, spartan_id)
 
 
 @web_app.route('/spartan', methods=["GET"])
 def list_getter():
-    return f"You are asking to view a list of all Spartan Records:"
+    spartans_json = {}
+    for key, value in spartans.items():
+        spartans_json[key] = value.__dict__
+    spartans_json = json.dumps(spartans_json)
+    return spartans_json
 
 if __name__ == "__main__":
     web_app.run()

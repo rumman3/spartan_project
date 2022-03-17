@@ -11,114 +11,110 @@ class Spartan:
         self.stream = ""
 
 
-    def set_id(self, spartans):
-        while True:
-            try:
-                self.id = int(input("Please Enter a Spartan ID: "))
-            except ValueError:
-                print("The ID should only contain digits")
-                continue   # continue brings you back to the top of the loop to try again
-            if self.id not in spartans.keys():
-                return self.id
-            else:
-                print("This ID is already taken")
+    def set_id(self, spartans, id):
+        text = ""
+        if id in spartans.keys():
+            text = "Id already in use."
+        try:
+            id = int(id)
+        except:
+            text = "Please enter a number."
+        self.id = id
+        return text
 
     def get_id(self):
         return self.id
 
 
-    def set_first_name(self):
-        while True:
-            self.firstname = input(f"Please Enter The First Name: ")
-            if len(self.firstname.strip()) > 1:
-                self.firstname = str(self.firstname)
-                break
-            else:
-                print("Name must be a minimum of 2 characters")
+    def set_first_name(self, firstname):
+        text = ""
+        if firstname.isdigit():
+            text = "Please enter letters only for the first name."
+        if len(firstname.strip()) <= 1:
+            text = "First name needs to be at least 2 characters."
+        self.firstname = firstname
+        return text
 
     def get_first_name(self):
         return self.firstname
 
-    def set_last_name(self):
-        while True:
-            self.lastname = input(f"Please Enter The Last Name: ")
-            if len(self.lastname.strip()) > 1:
-                self.lastname = str(self.lastname)
-                break
-            else:
-                print("Name must be a minimum of 2 characters")
+    def set_last_name(self, lastname):
+        text = ""
+        if lastname.isdigit():
+            text = "Please enter letters only for the last name."
+        if len(lastname.strip()) <= 1:
+            text = "Last name needs to be at least 2 characters."
+        self.lastname = lastname
+        return text
 
     def get_last_name(self):
         return self.lastname
 
-    def set_birth_day(self):
-        while True:
-            self.birthday = input("Please Enter the Spartan's Birth Day: ")
-            self.birthday = self.birthday.strip()
-            if self.birthday.strip():
-                self.birthday = int(self.birthday)
-                if (self.birthday >= 1) and (self.birthday <= 31):
-                    break
-                else:
-                    print("Employee Birth Day must be between 1 and 31")
-            else:
-                print("Employee Birth Day must contain only digits")
+    def set_birth_day(self, birthday):
+        text = ""
+        try:
+            birthday = int(birthday)
+        except ValueError:
+            text = "Please enter only digits for the Birth Day."
+            return text
+        if not ((birthday >= 1) and (birthday <= 31)):
+            text = "Employee Birth Day must be between 1 and 31"
+        self.birthday = birthday
+        return text
 
     def get_birth_day(self):
         return self.birthday
 
-    def set_birth_month(self):
-        while True:
-            self.birthmonth = input("Please Enter the Spartan's Birth Month: ")
-            self.birthmonth = self.birthmonth.strip()
-            if self.birthmonth.isdigit():
-                self.birthmonth = int(self.birthmonth)
-                if (self.birthmonth >= 1) and (self.birthmonth <= 12):
-                    break
-                else:
-                    print("Birth Month must be between 1 and 12")
-            else:
-                print("Birth Month must contain only digits")
+    def set_birth_month(self, birthmonth):
+        text = ""
+        try:
+            birthmonth = int(birthmonth)
+        except ValueError:
+            text = "Please enter only digits for the Birth Month."
+            return text
+        if not ((birthmonth >= 1) and (birthmonth <= 12)):
+            text = "Employee Birth Month must be between 1 and 12"
+        self.birthmonth = birthmonth
+        return text
 
     def get_birth_month(self):
         return self.birthmonth
 
-    def set_birth_year(self):
-        while True:
-            self.birthyear = input("Please Enter the Spartan's Birth Year: ")
-            self.birthyear = self.birthyear.strip()
-            if self.birthyear.isdigit():
-                self.birthyear = int(self.birthyear)
-                if (self.birthyear >= 1900) and (self.birthyear <= 2004):
-                    break
-                else:
-                    print("Birth Year must be between 1900 and 2004")
-            else:
-                print("Birth Year must contain only digits")
+    def set_birth_year(self, birthyear):
+        text = ""
+        try:
+            birthyear = int(birthyear)
+        except ValueError:
+            text = "Please enter only digits for the Birth Year."
+            return text
+        if not ((birthyear >= 1900) and (birthyear <= 2004)):
+            text = "Employee Birth Year must be between 1900 and 2004"
+        self.birthyear = birthyear
+        return text
 
     def get_birth_year(self):
         return self.birthyear
 
-    def set_course(self):
-        while True:
-            self.course = input("Please Enter The Spartan's Course Name:")
-            if len(self.course.strip()) > 0:
-                self.course = str(self.course)
-                break
-            else:
-                print("WARNING: Enter Valid Course Name")
+    def set_course(self, course):
+        text = ""
+        if course.isdigit():
+            text = "Please enter letters only for the course."
+        if len(course.strip()) <= 0:
+            text = "Course name needs to be at least 1 character."
+        self.course = course
+        return text
 
     def get_course(self):
         return self.course
 
-    def set_stream(self):
-        while True:
-            self.stream = input("Please Enter The Spartan's Stream Name:")
-            if len(self.stream.strip()) > 0:
-                self.stream = str(self.stream)
-                break
-            else:
-                print("WARNING: Enter Valid Stream Name")
+    def set_stream(self, stream):
+        text = ""
+        if stream.isdigit():
+            text = "Please enter letters only for the stream."
+        if len(stream.strip()) <= 0:
+            text = "Stream needs to be at least 1 character."
+        self.stream = stream
+        return text
 
     def get_stream(self):
         return self.stream
@@ -141,8 +137,8 @@ class Spartan:
             spartan.birthmonth = value["birthmonth"]
             spartan.birthyear = value["birthyear"]
             spartan.id = value["id"]
-            spartan.position = value["position"]
-            spartan.graduate = value["graduate"]
+            spartan.course = value["course"]
+            spartan.stream = value["stream"]
             spartans[key] = spartan
         return spartans
 
