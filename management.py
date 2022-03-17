@@ -21,3 +21,11 @@ def remove(spartans, spartan_id):
     except KeyError:
         text = "Error: id not found"
     return text
+
+def list(spartans):
+    spartans_json = {}
+    for key, value in spartans.items():
+        spartans_json[key] = value.__dict__
+    spartans_json = json.dumps(spartans_json)
+    return spartans_json
+

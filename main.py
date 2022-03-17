@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from spartan import Spartan
 from management import *
 import json
@@ -73,11 +73,7 @@ def spartan_remover():                     # must pass the changing variable as 
 
 @web_app.route('/spartan', methods=["GET"])
 def list_getter():
-    spartans_json = {}
-    for key, value in spartans.items():
-        spartans_json[key] = value.__dict__
-    spartans_json = json.dumps(spartans_json)
-    return spartans_json
+    return list(spartans)
 
 if __name__ == "__main__":
     web_app.run()
