@@ -106,3 +106,20 @@ class Spartan:
                f"\nSpartan Stream Name: {self.stream.capitalize().strip()}"
 
         return text
+
+    @staticmethod
+    def format_object(spartans):
+        for key, value in spartans.items():
+            spartan = Employee()
+            spartan.firstname = value["firstname"]
+            spartan.lastname = value["lastname"]
+            spartan.birthday = value["birthday"]
+            spartan.birthmonth = value["birthmonth"]
+            spartan.birthyear = value["birthyear"]
+            spartan.id = value["id"]
+            spartan.position = value["position"]
+            spartan.graduate = value["graduate"]
+            spartans[key] = spartan
+        return spartans
+
+

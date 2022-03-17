@@ -1,6 +1,15 @@
 from flask import Flask, request, jsonify
+from spartan import Spartan
+import json
 
 web_app = Flask(__name__)
+
+try:
+    with open("spartan_data.json", "r") as data_file:
+        spartans = json.load(data_file)
+    spartans = Spartan.format_object(spartans)
+except Exception as ex:
+    print(ex)
 
 @web_app.route('/', methods=["GET"])
 def home_page():
@@ -31,12 +40,22 @@ def add_spartan():
 @web_app.route('/spartan/<spartan_id>', methods=["GET"])
 def spartan_record_getter(spartan_id):                     # must pass the changing variable as the parameter
     # Check the database. read from a file, etc till you get the data
-    data = jsonify(id=spartan_id, name="Rumman", position="Manager")
-    return data
+    try:
+        text = str(spartans[spartan_id])
+    except KeyError:
+        text = "Error: id not found"
+    return text
 
-@web_app.route('/spartan/remove?id=spartan_id', methods=["POST"])
-def spartan_remover(spartan_id):                     # must pass the changing variable as the parameter
-    return f"You are asking to remove details of Spartan with ID: {spartan_id}"
+# http://127.0.0.1:5000/spartan/remove?id=spartan_id
+@web_app.route('/spartan/remove', methods=["POST"])
+def spartan_remover():                     # must pass the changing variable as the parameter
+    spartan_id = request.args.get("id")
+    try:
+        del spartans[spartan_id]
+        text = f"Spartan id {spartan_id} successfully removed."
+    except KeyError:
+        text = "Error: id not found"
+    return text + spartan_id
 
 @web_app.route('/spartan', methods=["GET"])
 def list_getter():
