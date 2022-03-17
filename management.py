@@ -3,14 +3,14 @@ import json
 
 
 def add_spartan(self, spartans):
-    self.read_id(spartans)
-    self.read_first_name()
-    self.read_last_name()
-    self.read_birth_day()
-    self.read_birth_month()
-    self.read_birth_year()
-    self.read_course()
-    self.read_stream()
+    self.set_id(spartans)
+    self.set_first_name()
+    self.set_last_name()
+    self.set_birth_day()
+    self.set_birth_month()
+    self.set_birth_year()
+    self.set_course()
+    self.set_stream()
 
 
 def remove_spartan():

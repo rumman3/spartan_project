@@ -21,18 +21,26 @@ def home_page():
 
 @web_app.route('/spartan/add', methods=["POST"])
 def add_spartan():
+    spartan = Spartan()
     spartan_data = request.json
-    spartan_id = spartan_data['s_id']
-    first_name = spartan_data['f_name']
-    last_name = spartan_data['l_name']
-    birth_day = spartan_data['b_day']
-    birth_month = spartan_data['b_month']
-    birth_year = spartan_data['b_year']
-    course = spartan_data['course']
-    stream = spartan_data['stream']
+    spartan.id = spartan_data["id"]
+    spartan.firstname = spartan_data["firstname"]
+    spartan.lastname = spartan_data["lastname"]
+    spartan.birthday = spartan_data["birthday"]
+    spartan.birthmonth = spartan_data["birthmonth"]
+    spartan.birthyear = spartan_data["birthyear"]
+    spartan.course = spartan_data["course"]
+    spartan.stream = spartan_data["stream"]
+    spartans[spartan.id] = spartan
+
+    spartans_json = {}
+    for key, value in spartans.items():
+        spartans_json[key] = value.__dict__
+    with open("spartan_data.json", "w") as jsonfile:  # jsonfile is the pointer to the file
+        json.dump(spartans_json, jsonfile, indent=4)
+
     # Call the method that will create employee record
-    return f"The Spartan with the following details will be added to the system:\nID: {spartan_id}\nFirst Name: {first_name}\nLast Name: {last_name}" \
-           f"\nBirth Date: {birth_day}/{birth_month}/{birth_year}\nCourse: {course}\nStream: {stream}"
+    return str(spartan)
 
 @web_app.route('/spartan/<spartan_id>', methods=["GET"])
 def spartan_record_getter(spartan_id):                     # must pass the changing variable as the parameter
