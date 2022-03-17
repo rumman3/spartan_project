@@ -110,7 +110,7 @@ class Spartan:
     @staticmethod
     def format_object(spartans):
         for key, value in spartans.items():
-            spartan = Employee()
+            spartan = Spartan()
             spartan.firstname = value["firstname"]
             spartan.lastname = value["lastname"]
             spartan.birthday = value["birthday"]

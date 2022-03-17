@@ -4,12 +4,9 @@ import json
 
 web_app = Flask(__name__)
 
-try:
-    with open("spartan_data.json", "r") as data_file:
-        spartans = json.load(data_file)
-    spartans = Spartan.format_object(spartans)
-except Exception as ex:
-    print(ex)
+with open("spartan_data.json", "r") as data_file:
+    spartans = json.load(data_file)
+spartans = Spartan.format_object(spartans)
 
 @web_app.route('/', methods=["GET"])
 def home_page():
@@ -40,6 +37,7 @@ def add_spartan():
 @web_app.route('/spartan/<spartan_id>', methods=["GET"])
 def spartan_record_getter(spartan_id):                     # must pass the changing variable as the parameter
     # Check the database. read from a file, etc till you get the data
+
     try:
         text = str(spartans[spartan_id])
     except KeyError:
@@ -47,15 +45,23 @@ def spartan_record_getter(spartan_id):                     # must pass the chang
     return text
 
 # http://127.0.0.1:5000/spartan/remove?id=spartan_id
-@web_app.route('/spartan/remove', methods=["POST"])
+@web_app.route('/spartan/remove', methods=["GET"])
 def spartan_remover():                     # must pass the changing variable as the parameter
     spartan_id = request.args.get("id")
     try:
         del spartans[spartan_id]
-        text = f"Spartan id {spartan_id} successfully removed."
+        text = f"Spartan id  successfully removed."
+
+        spartans_json = {}
+        for key, value in spartans.items():
+            spartans_json[key] = value.__dict__
+        with open("spartan_data.json", "w") as jsonfile:  # jsonfile is the pointer to the file
+            json.dump(spartans_json, jsonfile, indent=4)
+
     except KeyError:
         text = "Error: id not found"
-    return text + spartan_id
+    return text
+
 
 @web_app.route('/spartan', methods=["GET"])
 def list_getter():
